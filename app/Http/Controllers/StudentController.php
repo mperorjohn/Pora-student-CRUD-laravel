@@ -19,7 +19,17 @@ class StudentController extends Controller
 
         // fetching all the students in the the students table
 
-        $students = Student::all();
+        // $students = Student::all();
+
+        // fetch with trashed
+        // $students = Student::withTrashed()->get();
+
+        // fetch  and paginate
+        // $students = Student::paginate(10);
+
+
+        // fetch latest and paginate
+        $students = Student::latest()->paginate(10);
 
 
         $data  = [
@@ -63,7 +73,7 @@ class StudentController extends Controller
         if(!$student){
             return response()->json([
                 'status'=>false,
-                'message'=>'Student not found',
+                'message'=>'The student you are looking for does not exist',
             ], 404);
         }
         $data = [
@@ -81,11 +91,10 @@ class StudentController extends Controller
     public function store(Request $request)
     {
 
-        // dd('i am here');
         // validate the request data
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'age' => 'sometimes|string|max:3',
+            'age' => 'required|string|max:6',
             'state_of_origin' => 'required|string|max:255',
             'class' => 'required|string|max:255',
         ]);
@@ -113,6 +122,69 @@ class StudentController extends Controller
     }
 
 
+    // update
+    public function update(Request $request, $id)
+    {
+        // validate the request data
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|required|string|max:255',
+            'age' => 'sometimes|required|string|max:6',
+            'state_of_origin' => 'sometimes|required|string|max:255',
+            'class' => 'sometimes|required|string|max:255',
+        ]);
+
+        // if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors(),
+            ], 422);
+        }
+
+        // find the student by id
+        $student = Student::find($id);
+
+        // if student is not found
+        if (!$student) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Student not found',
+            ], 404);
+        }
+
+        // update the student
+        $student->update($request->all());
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Student updated successfully',
+            'data' => $student,
+        ], 200);
+    }
+
+
+    // delete
+    public function destroy($id)
+    {
+        // find the student by id
+        $student = Student::find($id);
+
+        // if student is not found
+        if (!$student) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Student not found',
+            ], 404);
+        }
+
+        // delete the student
+        $student->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Student deleted successfully',
+        ], 200);
+    }
 
 
 
