@@ -17,6 +17,8 @@ class StudentController extends Controller
     // index
     public function index(){
 
+        // method_mapping
+        // $test = UserController::class;
         // fetching all the students in the the students table
 
         // $students = Student::all();

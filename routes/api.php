@@ -31,9 +31,9 @@ Route::group(['prefix' => 'user'], function () {
 
     Route::post('create-user', [UserController::class, 'create']);
 
-    // Route::put('update-user/{id}', [UserController::class, 'update']);
+    Route::put('update-user/{id}', [UserController::class, 'update']);
 
 
-    // Route::delete('delete-user/{id}', [UserController::class, 'destroy']);
+    Route::delete('delete-user/{id}', [UserController::class, 'destroy']);
 
 });
