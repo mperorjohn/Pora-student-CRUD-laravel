@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use SoftDeletes;
-    
+
     protected $fillable = [
         'name',
         'description',
@@ -23,5 +23,11 @@ class Product extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+
+    // Relationship
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class)->select('id', 'name', 'logo_url');
+    }
 
 }
