@@ -11,7 +11,10 @@ class ProductController extends Controller
     //index
     public function index()
     {
-        $products = Product::with('brand')->latest()->get();
+        $products = Product::isActive()
+        ->withBrand()
+        ->latest()
+        ->get();
 
         $data = [
             'status' => true,

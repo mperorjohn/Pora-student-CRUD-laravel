@@ -30,4 +30,15 @@ class Product extends Model
         return $this->belongsTo(Brand::class)->select('id', 'name', 'logo_url');
     }
 
+    public function scopeIsActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeWithBrand($query)
+    {
+        return $query->with('brand:id,name,logo_url');
+    }
+
+
 }
